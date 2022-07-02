@@ -44,11 +44,41 @@ void TraverseInLinkedList(){
 	}
 }
 
+struct Node * InsertAtBegin(struct Node *head,int data){
+	struct Node *p=(struct Node*)malloc(sizeof(struct Node));
+	p->next=head;
+	p->data=data;
+	return p;
+}
+
 int main(){
-	int n;
+	int n,data,m;
+	char ch;
 	printf("How Many Nodes You Want To Allocate?: ");
 	scanf("%d",&n);
 	createlist(n);
-	TraverseInLinkedList();
+	printf("\nDo You Want To Insert Operations[y/n]: ");
+	scanf("%s",&ch);
+	if(ch=='y' || ch=='Y'){
+		printf("\n\n");
+		printf("INSERT OPERATIONS IN A LINKED LIST\n");
+		printf("1-> To Insert At Begin\n");
+		printf("2-> To Insert in between\n");
+		printf("3-> To Insert at the end\n");
+		printf("4-> To Insert after a node\n");
+		printf("Enter The Case Do You Want: ");
+		scanf("%d",&m);
+		switch(m){
+			case 1:
+			printf("\nEnter The Data You Want To Insert At Begin: ");
+			scanf("%d",&data);
+			head=InsertAtBegin(head,data);
+			TraverseInLinkedList(head);
+		}
+	}
+	else{
+		TraverseInLinkedList();
+	}
+	
 	return 0;
 }
