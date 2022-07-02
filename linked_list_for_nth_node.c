@@ -51,8 +51,41 @@ struct Node * InsertAtBegin(struct Node *head,int data){
 	return p;
 }
 
+struct Node * InsertAtIndex(struct Node *head,int data, int key){
+	struct Node *ptr=(struct Node*)malloc(sizeof(struct Node));
+	struct Node *p=head;
+	int i=0;
+	while (i != (key-1)){
+		p=p->next;
+		i++;
+	}
+	ptr->data=data;
+	ptr->next=p->next;
+	p->next=ptr;
+	return head;
+}
+
+struct Node *InsertAtEnd(struct Node *head,int data){
+	struct Node *ptr=(struct Node*)malloc(sizeof(struct Node));
+	struct Node *p=head;
+	while(p->next != NULL){
+		p=p->next;
+	}
+	ptr->data=data;
+	p->next=ptr;
+	ptr->next=NULL;
+	return head;
+}
+
+struct Node *InsertAfter(struct Node *head,struct Node *prev,int data){
+	struct Node * ptr=(struct Node*)malloc(sizeof(struct Node));
+	ptr->next=prev->next;
+	prev->next=ptr;
+	return head;
+}
+
 int main(){
-	int n,data,m;
+	int n,data,m,key;
 	char ch;
 	printf("How Many Nodes You Want To Allocate?: ");
 	scanf("%d",&n);
@@ -65,8 +98,7 @@ int main(){
 		printf("1-> To Insert At Begin\n");
 		printf("2-> To Insert in between\n");
 		printf("3-> To Insert at the end\n");
-		printf("4-> To Insert after a node\n");
-		printf("Enter The Case Do You Want: ");
+		printf("\n\nEnter The Case Do You Want: ");
 		scanf("%d",&m);
 		switch(m){
 			case 1:
@@ -74,7 +106,24 @@ int main(){
 			scanf("%d",&data);
 			head=InsertAtBegin(head,data);
 			TraverseInLinkedList(head);
-		}
+			break;
+			case 2:
+				printf("\nEnter The Index Number You Want To Insert: ");
+				scanf("%d",&key);
+				printf("\nEnter The Data You Want To Insert With Respect To The Index: ");
+				scanf("%d",&data);
+				head=InsertAtIndex(head,data,key);
+				TraverseInLinkedList(head);
+				break;
+			case 3:
+				printf("\nEnter The Data You Want To Insert At End: ");
+				scanf("%d",&data);
+				head=InsertAtEnd(head,data);
+				TraverseInLinkedList(head);
+				break;
+			default :
+				TraverseInLinkedList();
+			}
 	}
 	else{
 		TraverseInLinkedList();
