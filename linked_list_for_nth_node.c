@@ -90,6 +90,7 @@ int main(){
 	printf("How Many Nodes You Want To Allocate?: ");
 	scanf("%d",&n);
 	createlist(n);
+	while(1){
 	printf("\nDo You Want To Insert Operations[y/n]: ");
 	scanf("%s",&ch);
 	if(ch=='y' || ch=='Y'){
@@ -128,6 +129,10 @@ int main(){
 	else{
 		TraverseInLinkedList();
 	}
+	if(ch=='n'){
+		break;
+	}
+}
 	
 	return 0;
 }
