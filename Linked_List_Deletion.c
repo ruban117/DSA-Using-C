@@ -118,7 +118,7 @@ int main(){
 				printf("Previous Linked List Is: \n");
 				TraverseInLinkedList();
 				printf("\nLinked List After Deletion: \n");
-				head=DeleteByValue(head,data);
+				head=DeleteAtBegin(head);
 				TraverseInLinkedList(head);
 				break;
 				
