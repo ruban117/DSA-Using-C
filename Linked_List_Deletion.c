@@ -1,4 +1,4 @@
-/*Create A Linked List For Performing Insert Operations*/
+/*Create A Linked List For Performing Delete Operations*/
 
 #include<stdio.h>
 #include<stdlib.h>
