@@ -1,3 +1,5 @@
+/*Add Two polynomial Using Array*/
+
 #include<stdio.h>
 struct Array_Polynomial
 {
