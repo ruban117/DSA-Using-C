@@ -1,131 +1,264 @@
-/*Create A Circular Singly LL and do the insert operetions in it*/
+/*Create A Circular Singly LL and do the All operetions in it*/
 
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-struct Node{
+struct Node
+{
 	int data;
 	struct Node *next;
-}*head;
+};
 
-void createlist(int n){
-	struct Node *newnode,*temp;
-	int data,i;
-	head=(struct Node*)malloc(sizeof(struct Node));
-	if(head==NULL){
-		printf("Unable To Allocate Memory");
-		exit(0);
+void TraverseCircularLinkedList(struct Node *head)
+{
+	if (head == NULL)
+	{
+		printf("Your List Is Empty!!!");
+		printf("\n");
 	}
-	printf("Enter the data of node 1: ");
-    scanf("%d", &data);
-	head->data=data;
-	head->next=NULL;
-	temp=head;
-	for(i=2;i<=n;i++){
-		newnode=(struct Node*)malloc(sizeof(struct Node));
-		if(newnode==NULL){
-		printf("Unable To Allocate Memory");
-		exit(0);
-	}
-	printf("Enter the data of node %d: ",i);
-	scanf("%d",&data);
-	newnode->data=data;
-	newnode->next=NULL;
-	temp->next=newnode;
-	temp=temp->next;
-	}
-}
-
-void TraverseInCircularLL(){
-	struct Node *p=head;
-	do{
-		printf("%d ",p->data);
-		p=p->next;
-	}
-	while(p != head);
-}
-
-struct Node *InsertAtCircularSinglyBegin(struct Node *head,int data){
-   struct Node * ptr;
-   ptr = (struct Node*) malloc (sizeof(struct Node));
-   ptr->data = head->data;
-   head->data = data;
-   ptr->next = head->next;
-   head->next = ptr;
-   return head ;
-}
-
-struct Node *InsertAtIndexSinglyCircular(struct Node *head,int data,int key){
-	struct Node *p=head;
-	struct Node *ptr=(struct Node*) malloc (sizeof(struct Node));
-	int i=0;
-	while(i != key-1){
-		p=p->next;
-		i++;
-	}
-	ptr->data=data;
-	ptr->next=p->next;
-	p->next=ptr;
-	return head;
-}
-
-struct Node *InsertAtEndSinglyCircular(struct Node *head,int data){
-	/*struct Node *ptr = (struct Node*)malloc(sizeof(struct Node));
-	struct Node *p=head;
-	while(p->next !=head){
-		p=p->next;
-	}
-	p->next=ptr;
-	ptr->next=head;
-	return head;*/
-}
-
-int main(){
-	int n,data,m,key;
-	char ch;
-	while(1){
-	printf("\n..........................................\n");
-	printf("How Many Nodes You Want To Allocate?: ");
-	scanf("%d",&n);
-	createlist(n);
-	printf("\nDo You Want To Insert Operations[y/n]: ");
-	scanf("%s",&ch);
-	if(ch=='y' || ch=='Y'){
+	else
+	{
+		struct Node *p = head;
+		printf("\nYour Created Linked List Is In Bellow::::\n");
+		do
+		{
+			printf("%d ", p->data);
+			p = p->next;
+		} while (p != head);
 		printf("\n\n");
-		printf("INSERT OPERATIONS IN A CIRCULAR SINGLY LINKED LIST\n");
-		printf("1-> To Insert At Begin\n");
-		printf("2-> To Insert in between\n");
-		printf("3-> To Insert at the end\n");
-		printf("\n\nEnter The Case Do You Want: ");
-		scanf("%d",&m);
-		switch(m){
-			case 1:
-				printf("\nEnter The Data You Want To Insert At Begin: ");
-				scanf("%d",&data);
-				head=InsertAtCircularSinglyBegin(head,data);
-				TraverseInCircularLL(head);
-				break;
-			case 2:
-				printf("\nEnter The Index Number You Want To Insert: ");
-				scanf("%d",&key);
-				printf("\nEnter The Data You Want To Insert With Respect To The Index: ");
-				scanf("%d",&data);
-				head=InsertAtIndexSinglyCircular(head,data,key);
-				TraverseInCircularLL(head);
-				break;
-			case 3:
-				printf("\nEnter The Data You Want To Insert At End: ");
-				scanf("%d",&data);
-				head=InsertAtEndSinglyCircular(head,data);
-				TraverseInCircularLL(head);
-				break;	
-			default:
-				TraverseInCircularLL();
-			}
+	}
+}
+
+void InsertAtBeg(struct Node **head, int val)
+{
+	struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+	struct Node *p;
+	ptr->data = val;
+	if (ptr == NULL)
+	{
+		printf("Unable To Create");
+	}
+	else if (*head == NULL)
+	{
+		ptr->next = ptr;
+		*head = ptr;
+	}
+	else
+	{
+		p = *head;
+		while (p->next != *head)
+		{
+			p = p->next;
 		}
-		else{
-			TraverseInCircularLL();
+		p->next = ptr;
+		ptr->next = *head;
+		*head = ptr;
+	}
+}
+
+void InsertAtEnd(struct Node **head, int val)
+{
+	struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+	struct Node *p;
+	ptr->data = val;
+	if (ptr == NULL)
+	{
+		printf("Unable To Create");
+	}
+	else if (*head == NULL)
+	{
+		ptr->next = ptr;
+		*head = ptr;
+	}
+	else
+	{
+		p = *head;
+		while (p->next != *head)
+		{
+			p = p->next;
 		}
+		p->next = ptr;
+		ptr->next = *head;
+	}
+}
+
+void InsertAtPosInCricular(struct Node **head, int pos, int val)
+{
+	struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+	struct Node *p = *head;
+	int i;
+	ptr->data = val;
+	if (ptr == NULL)
+	{
+		printf("Unable To Create");
+	}
+	else if (*head == NULL)
+	{
+		ptr->next = ptr;
+		*head = ptr;
+	}
+	else
+	{
+		for (i = 1; i < pos - 1; i++)
+		{
+			p = p->next;
+		}
+		ptr->next = p->next;
+		p->next = ptr;
+	}
+}
+
+void DeleteFirstPositionInSinglyCircular(struct Node **head)
+{
+	struct Node *p = *head;
+	if (*head == NULL)
+	{
+		printf("Unable to delete!!");
+	}
+	else if (p->next == *head)
+	{
+		*head = NULL;
+		free(*head);
+	}
+	else
+	{
+		while (p->next != *head)
+		{
+			p = p->next;
+		}
+		p->next = (*head)->next;
+		free(*head);
+		*head = p->next;
+	}
+}
+
+void DeleteLastPositionInSinglyCircular(struct Node **head)
+{
+	struct Node *lastnode = *head;
+	struct Node *prelastnode;
+	if (*head == NULL)
+	{
+		printf("Unable to delete!!");
+	}
+	else if ((*head)->next == *head)
+	{
+		*head = NULL;
+		free(*head);
+	}
+	else
+	{
+		while (lastnode->next != *head)
+		{
+			prelastnode = lastnode;
+			lastnode = lastnode->next;
+		}
+		prelastnode->next = lastnode->next;
+		free(lastnode);
+	}
+}
+
+void DeleteNthPositionInSinglyCircular(struct Node **head, int pos)
+{
+	struct Node *p = *head;
+	struct Node *q=(*head)->next;
+	int i;
+	if (*head == NULL)
+	{
+		printf("Unable to delete!!");
+	}
+	else if ((*head)->next == *head)
+	{
+		*head = NULL;
+		free(*head);
+	}
+	else
+	{
+		for (i = 1; i < pos - 1; i++)
+		{
+			p = p->next;
+			q= q->next;
+		}
+		p->next = q->next;
+		free(q);
+	}
+}
+
+int main()
+{
+	struct Node *head = NULL;
+	while (1)
+	{
+		printf("\t\t\t\t\tCIRCULAR LINKED LIST\n\n");
+		printf("\t\t\t\t1->Create A Circular Linked List: \n");
+		printf("\t\t\t\t2->Insert At Beginning To The Circular Linked List: \n");
+		printf("\t\t\t\t3->Insert At Last To The Circular Linked List: \n");
+		printf("\t\t\t\t4->Insert At Position To The Circular Linked List: \n");
+		printf("\t\t\t\t5->Traverse Circular Linked List: \n");
+		printf("\t\t\t\t6->Delete At First PositionTo The Circular Linked List: \n");
+		printf("\t\t\t\t7->Delete At Last Position To The Circular Linked List: \n");
+		printf("\t\t\t\t8->Delete By Position In Circular Linked List: \n");
+		int a, num, val;
+		char ch;
+		printf("Enter Your Choice: ");
+		scanf("%d", &a);
+		switch (a)
+		{
+		case 1:
+			printf("Enter Value: ");
+			scanf("%d", &num);
+			InsertAtEnd(&head, num);
+			break;
+		case 2:
+			printf("Enter The Value You Want To Insert At Begin: ");
+			scanf("%d", &num);
+			InsertAtBeg(&head, num);
+			break;
+		case 3:
+			printf("Enter Value: ");
+			scanf("%d", &num);
+			InsertAtEnd(&head, num);
+			break;
+		case 4:
+			printf("Enter The Position You Want To Insert: ");
+			scanf("%d", &num);
+			printf("Enter The Value You Want To Insert: ");
+			scanf("%d", &val);
+			InsertAtPosInCricular(&head, num, val);
+			break;
+		case 5:
+			if (head == NULL)
+				printf("Empty List");
+			else
+				TraverseCircularLinkedList(head);
+			break;
+		case 6:
+			printf("The Circular List Is (Before Deletion):\n");
+			TraverseCircularLinkedList(head);
+			printf("The Circular List Is (After Deletion):\n");
+			DeleteFirstPositionInSinglyCircular(&head);
+			TraverseCircularLinkedList(head);
+			break;
+		case 7:
+			printf("The Circular List Is (Before Deletion):\n");
+			TraverseCircularLinkedList(head);
+			printf("The Circular List Is (After Deletion):\n");
+			DeleteLastPositionInSinglyCircular(&head);
+			TraverseCircularLinkedList(head);
+			break;
+		case 8:
+			TraverseCircularLinkedList(head);
+			printf("Enter The Position You Want To Insert: ");
+			scanf("%d", &num);
+			DeleteNthPositionInSinglyCircular(&head, num);
+			TraverseCircularLinkedList(head);
+			break;
+		default:
+			TraverseCircularLinkedList(head);
+		}
+		printf("Do You Want To Stop?: ");
+		scanf("%s", &ch);
+		if (ch == 'b' || ch == 'B')
+			break;
 	}
 	return 0;
 }
