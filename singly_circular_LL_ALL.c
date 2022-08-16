@@ -1,5 +1,3 @@
-/*Create A Circular Singly LL and do the All operetions in it*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -94,17 +92,34 @@ void InsertAtPosInCricular(struct Node **head, int pos, int val)
 	}
 	else if (*head == NULL)
 	{
+		printf("You Have To Create At Least A Linked List");
+		exit(0);
+	}
+	else if (*head == NULL && pos == 1)
+	{
 		ptr->next = ptr;
 		*head = ptr;
 	}
-	else
+	else if (pos == 1)
 	{
-		for (i = 1; i < pos - 1; i++)
+		while (p->next != *head)
 		{
 			p = p->next;
 		}
-		ptr->next = p->next;
 		p->next = ptr;
+		ptr->next = *head;
+		ptr = *head;
+	}
+	else
+	{
+		{
+			for (i = 1; i < pos - 1; i++)
+			{
+				p = p->next;
+			}
+			ptr->next = p->next;
+			p->next = ptr;
+		}
 	}
 }
 
@@ -160,7 +175,7 @@ void DeleteLastPositionInSinglyCircular(struct Node **head)
 void DeleteNthPositionInSinglyCircular(struct Node **head, int pos)
 {
 	struct Node *p = *head;
-	struct Node *q=(*head)->next;
+	struct Node *q = (*head)->next;
 	int i;
 	if (*head == NULL)
 	{
@@ -176,7 +191,7 @@ void DeleteNthPositionInSinglyCircular(struct Node **head, int pos)
 		for (i = 1; i < pos - 1; i++)
 		{
 			p = p->next;
-			q= q->next;
+			q = q->next;
 		}
 		p->next = q->next;
 		free(q);
