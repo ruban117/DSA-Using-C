@@ -196,27 +196,6 @@ void Display(struct Node *head)
         printf("\n\n");
     }
 }
-
-struct Node *Largest(struct Node *head){
-	struct Node *p=head, *maxp;
-	int max=p->data;
-	if(p->next == NULL){
-		maxp=p;
-		max=p->data;
-		return maxp;
-	}
-	else{
-		while(p !=NULL){
-			if(p->data>max){
-				maxp=p;
-				max=p->data;	
-			}
-			p=p->next;
-		}
-		return maxp;
-	}
-}
-
 int main()
 {
     struct Node *head = NULL;
@@ -308,8 +287,8 @@ int main()
             ReverseLinkedList(&head);
             Display(head);
             break;
-        case 11:
-        	printf("The Largest Node Is: %d",Largest(head)->data);
+        /*case 11:
+        	//printf("The Largest Node Is: %d",Largest(head)->data);*/
         default:
             Display(head);
         }
