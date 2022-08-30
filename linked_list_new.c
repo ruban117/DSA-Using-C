@@ -130,7 +130,8 @@ void DeleteByNthNode(struct Node **head, int val)
     }
     else
     {
-        for (int i = 1; i < val - 1; i++)
+    	int i;
+        for ( i = 1; i < val - 1; i++)
         {
             p = p->next;
             q = q->next;
@@ -196,6 +197,26 @@ void Display(struct Node *head)
     }
 }
 
+struct Node *Largest(struct Node *head){
+	struct Node *p=head, *maxp;
+	int max=p->data;
+	if(p->next == NULL){
+		maxp=p;
+		max=p->data;
+		return maxp;
+	}
+	else{
+		while(p !=NULL){
+			if(p->data>max){
+				maxp=p;
+				max=p->data;	
+			}
+			p=p->next;
+		}
+		return maxp;
+	}
+}
+
 int main()
 {
     struct Node *head = NULL;
@@ -214,6 +235,7 @@ int main()
         printf("\t\t\t\t\t\t\t9->Delete The Last Node:\n");
         printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
         printf("\t\t\t\t\t\t\t10->Reverse The Linked List:\n");
+         printf("\t\t\t\t\t\t\t11->To Find Largest Node:\n");
         printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
         printf("\t\t\t\t\t\t\tEnter C or c To Continue: \n");
         printf("\t\t\t\t\t\t\tEnter B or b To Stop: \n");
@@ -286,6 +308,8 @@ int main()
             ReverseLinkedList(&head);
             Display(head);
             break;
+        case 11:
+        	printf("The Largest Node Is: %d",Largest(head)->data);
         default:
             Display(head);
         }
