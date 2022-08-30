@@ -1,162 +1,343 @@
-/*Create A Doubly Linked List For Performing Insert Operations*/
+#include <stdio.h>
+#include <stdlib.h>
 
-#include<stdio.h>
-#include<stdlib.h>
+struct Node
+{
+    int data;
+    struct Node *next, *prev;
+};
 
-struct Node{
-	int data;
-	struct Node *next;
-	struct Node *prev;
-}*head;
-
-void createlist(int n){
-	struct Node *newnode,*temp;
-	int data,i;
-	head=(struct Node*)malloc(sizeof(struct Node));
-	if(head==NULL){
-		printf("Unable To Allocate Memory");
-		exit(0);
-	}
-	printf("Enter the data of node 1: ");
-    scanf("%d", &data);
-	head->data=data;
-	head->next=NULL;
-	head->prev=NULL;
-	temp=head;
-	for(i=2;i<=n;i++){
-		newnode=(struct Node*)malloc(sizeof(struct Node));
-		if(newnode==NULL){
-		printf("Unable To Allocate Memory");
-		exit(0);
-	}
-	printf("Enter the data of node %d: ",i);
-	scanf("%d",&data);
-	newnode->data=data;
-	newnode->next=NULL;
-	newnode->prev=temp;
-	temp->next=newnode;
-	temp=newnode;
-	}
+void InsertAtBegin(struct Node **head, int data)
+{
+    // struct Node *p=*head;
+    struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+    ptr->data = data;
+    ptr->prev = NULL;
+    ptr->next = *head;
+    if (*head != NULL)
+        (*head)->prev = ptr;
+    *head = ptr;
 }
 
-void TraverseInLinkedList(){
-	struct Node *ptr;
-	printf("The Created List Is In Bellow:\n\n");
-	ptr=head;
-	while(ptr!=NULL){
-		printf("%d ",ptr->data);
-		ptr=ptr->next;
-	}
+void InsertAtEnd(struct Node **head, int data)
+{
+    struct Node *p;
+    struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+    ptr->data = data;
+    if (*head == NULL)
+    {
+        ptr->prev = NULL;
+        ptr->next = NULL;
+        *head = ptr;
+    }
+    else
+    {
+        p = *head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->next = ptr;
+        ptr->prev = p;
+        ptr->next = NULL;
+    }
 }
 
-struct Node * InsertAtBegin(struct Node *head,int data){
-	struct Node *p=(struct Node*)malloc(sizeof(struct Node));
-	p->next=head;
-	p->prev=NULL;
-	p->data=data;
-	return p;
+void InsertAtPos(struct Node **head, int data, int pos)
+{
+    struct Node *p;
+    struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+    ptr->data = data;
+    if (pos == 1)
+    {
+        ptr->data = data;
+        ptr->prev = NULL;
+        ptr->next = *head;
+        if (*head != NULL)
+            (*head)->prev = ptr;
+        *head = ptr;
+    }
+    else
+    {
+        p = *head;
+        for (int i = 1; i < pos - 1; i++)
+        {
+            p = p->next;
+        }
+        ptr->next = p->next;
+        if (p->next != NULL)
+        {
+            p->next->prev = ptr;
+        }
+        p->next = ptr;
+        ptr->prev = p;
+    }
 }
 
-struct Node * InsertAtIndex(struct Node *head,int data, int key){
-	struct Node *ptr=(struct Node*)malloc(sizeof(struct Node));
-	struct Node *p=head;
-	int i=0;
-	while (i != (key-1)){
-		p=p->next;
-		i++;
-	}
-	ptr->data=data;
-	ptr->next=p->next;
-	ptr->prev=p;
-	p->next=ptr;
-	return head;
+void InsertAfterNode(struct Node **head, int pos, int data)
+{
+    struct Node *p = *head;
+    struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+    ptr->data = data;
+    while (p->data != pos && p->next != NULL)
+    {
+        p = p->next;
+    }
+    if (p->data == pos)
+    {
+        ptr->next = p->next;
+        if (p->next != NULL)
+        {
+            p->next->prev = ptr;
+        }
+        p->next = ptr;
+        ptr->prev = p;
+    }
 }
 
-struct Node *InsertAtEnd(struct Node *head,int data){
-	struct Node *ptr=(struct Node*)malloc(sizeof(struct Node));
-	struct Node *p=head;
-	while(p->next != NULL){
-		p=p->next;
-	}
-	ptr->data=data;
-	p->next=ptr;
-	ptr->next=NULL;
-	ptr->prev=p;
-	return head;
+void DeleteAtBegin(struct Node **head)
+{
+    struct Node *p = *head;
+    if (*head == NULL)
+    {
+        printf("Invalid!!");
+    }
+    else
+    {
+        if (p->next != NULL)
+            p->next->prev = NULL;
+        *head = p->next;
+        free(p);
+    }
 }
 
-struct Node *ReverseDoublyLL(struct Node *head){
-	struct Node *cur,*temp;
-	cur=head;
-	temp=NULL;
-	while(cur!=NULL){
-		temp=cur->prev;
-		cur->prev=cur->next;
-		cur->next=temp;
-		cur=cur->prev;
-	}
-	return temp->prev;
+void DeleteAtLast(struct Node **head)
+{
+    if (*head == NULL)
+    {
+        printf("Invalid!!");
+    }
+    else if ((*head)->next == NULL)
+    {
+        *head = NULL;
+        free(*head);
+    }
+    else
+    {
+        struct Node *p = *head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->prev->next = NULL;
+        free(p);
+    }
 }
 
-int main(){
-	int n,data,m,key;
-	char ch;
-	while(1){
-	printf("\n..........................................\n");
-	printf("How Many Nodes You Want To Allocate?: ");
-	scanf("%d",&n);
-	createlist(n);
-	printf("\nDo You Want To Insert Operations[y/n]: ");
-	scanf("%s",&ch);
-	if(ch=='y' || ch=='Y'){
-		TraverseInLinkedList();
-		printf("\n\n");
-		printf("INSERT OPERATIONS IN A LINKED LIST\n");
-		printf("1-> To Insert At Begin\n");
-		printf("2-> To Insert in between\n");
-		printf("3-> To Insert at the end\n");
-		printf("4-> To Reverse The Doubly Linked List\n");
-		printf("\n\nEnter The Case Do You Want: ");
-		scanf("%d",&m);
-		switch(m){
-			case 1:
-			printf("\nEnter The Data You Want To Insert At Begin: ");
-			scanf("%d",&data);
-			head=InsertAtBegin(head,data);
-			TraverseInLinkedList(head);
-			break;
-			case 2:
-				printf("\nEnter The Position Number You Want To Insert: ");
-				scanf("%d",&key);
-				printf("\nEnter The Number You Want To Insert With Respect To The Index: ");
-				scanf("%d",&data);
-				head=InsertAtIndex(head,data,key);
-				TraverseInLinkedList(head);
-				break; 
-			case 3:
-				printf("\nEnter The Data You Want To Insert At End: ");
-				scanf("%d",&data);
-				head=InsertAtEnd(head,data);
-				TraverseInLinkedList(head);
-				break;
-			case 4:
-				printf("\nThe Linked List Before Reverse:\n");
-				TraverseInLinkedList();
-				printf("\nThe Linked List After Reverse:\n");
-				head=ReverseDoublyLL(head);
-				TraverseInLinkedList(head);
-				break;
-			default :
-				TraverseInLinkedList();
-			}
-	}
-	else{
-		TraverseInLinkedList();
-	}
-	if(ch=='n'){
-		break;
-	}
+void DeleteByNthNode(struct Node **head, int pos)
+{
+    struct Node *p = *head;
+    struct Node *q ;
+    if (*head == NULL)
+    {
+        printf("Invalid!!");
+    }
+    else if (pos == 1)
+    {
+        if (p->next != NULL)
+            p->next->prev = NULL;
+        *head = p->next;
+        free(p);
+    }
+    else if ((*head)->next == NULL)
+    {
+        *head = NULL;
+        free(*head);
+    }
+    else
+    {
+        for (int i = 1; i <= pos - 1; i++)
+        {
+            p = p->next;
+            //q = q->next;
+        }
+        q=p->prev;
+        q->next=p->next;
+        p->next->prev=q;
+        free(p);
+        p=NULL;
+    }
 }
-	
-	return 0;
+
+void DeleteByValue(struct Node **head, int val)
+{
+    struct Node *p = *head;
+    struct Node *q ;
+    if (*head == NULL)
+    {
+        printf("Invalid!!");
+    }
+    else if (val == p->data)
+    {
+        if (p->next != NULL)
+            p->next->prev = NULL;
+        *head = p->next;
+        free(p);
+    }
+    else if ((*head)->next == NULL)
+    {
+        *head = NULL;
+        free(*head);
+    }
+    else
+    {
+        while(p->data!=val && p->next!=NULL)
+        {
+            p = p->next;
+            //q = q->next;
+        }
+        q=p->prev;
+        q->next=p->next;
+        p->next->prev=q;
+        free(p);
+        p=NULL;
+    }
+}
+
+void ReverseDoubly(struct Node *head){
+    struct Node *p=head;
+    struct Node *q=head->next;
+    p->next=NULL;
+    p->prev=q;
+    while(q!=NULL){
+        q->prev=q->next;
+        q->next=p;
+        p=q;
+        q=q->prev;
+    }
+    p=head;
+}
+
+void Display(struct Node *head)
+{
+    if (head == NULL)
+    {
+        printf("Here Is Not Any Head!!!");
+    }
+    else
+    {
+        struct Node *p = head;
+        while (p != NULL)
+        {
+            printf("%d ", p->data);
+            p = p->next;
+        }
+    }
+}
+
+int main()
+{
+    struct Node *head = NULL;
+    while (1)
+    {
+        printf("\n");
+        printf("\t\t\t\t\t\t\t1->To Create A Doubly Linked List\n");
+        printf("\t\t\t\t\t\t\t2->Insert At Begin In Doubly Linked List\n");
+        printf("\t\t\t\t\t\t\t3->Insert At End In Doubly Linked List\n");
+        printf("\t\t\t\t\t\t\t4->Traverse In Doubly Linked List\n");
+        printf("\t\t\t\t\t\t\t5->Insert After Node In Doubly Linked List:\n");
+        printf("\t\t\t\t\t\t\t6->Insert At Position In Doubly Linked List\n");
+        printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
+        printf("\t\t\t\t\t\t\t7->Delete At Begin In Doubly Linked List\n");
+        printf("\t\t\t\t\t\t\t8->Delete By Nth Node In Doubly Linked List:\n");
+         printf("\t\t\t\t\t\t\t9->Delete The Node By Value In Doubly Linked List:\n");
+        printf("\t\t\t\t\t\t\t10->Delete The Last Node In Doubly Linked List:\n");
+        printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
+        printf("\t\t\t\t\t\t\t11->Reverse The Linked List In Doubly Linked List:\n");
+        printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
+        printf("\t\t\t\t\t\t\tEnter C or c To Continue In Doubly Linked List: \n");
+        printf("\t\t\t\t\t\t\tEnter B or b To Stop In Doubly Linked List: \n");
+        int a, num, val;
+        char ch;
+        printf("Enter Your Choice: ");
+        scanf("%d", &a);
+        switch (a)
+        {
+        case 1:
+            printf("Enter Value: ");
+            scanf("%d", &num);
+            InsertAtEnd(&head, num);
+            // ReverseLinkedList(&head);
+            break;
+        case 2:
+            printf("Enter The Value You Want To Insert At Begin: ");
+            scanf("%d", &num);
+            InsertAtBegin(&head, num);
+            break;
+        case 3:
+            printf("Enter Value: ");
+            scanf("%d", &num);
+            InsertAtEnd(&head, num);
+            break;
+        case 4:
+            if (head == NULL)
+                printf("Empty List");
+            else
+                Display(head);
+            break;
+        case 5:
+            Display(head);
+            printf("\nEnter The Element You Want To Insert After: ");
+            scanf("%d", &num);
+            printf("Enter The Value: ");
+            scanf("%d", &val);
+            InsertAfterNode(&head, num, val);
+            break;
+        case 6:
+            Display(head);
+            printf("\nEnter the pos you want to insert a element: ");
+            scanf("%d", &num);
+            printf("Enter the Value: ");
+            scanf("%d", &val);
+            InsertAtPos(&head, val, num);
+            break;
+        case 7:
+            Display(head);
+            printf("\nThe Linked List Is After Delete The First Node->->->->\n");
+            DeleteAtBegin(&head);
+            Display(head);
+            break;
+        case 8:
+            Display(head);
+            printf("Enter The Node Pos You Want To Delete?: ");
+            scanf("%d", &num);
+            DeleteByNthNode(&head, num);
+            Display(head);
+            break;
+        case 9:
+            Display(head);
+            printf("Enter The Node Value(Must Be Present Into The List) You Want To Delete?: ");
+            scanf("%d", &num);
+            DeleteByValue(&head, num);
+            Display(head);
+            break;
+        case 10:
+            Display(head);
+            printf("\nThe Linked List Is After Delete The Last Node->->->->\n");
+            DeleteAtLast(&head);
+            Display(head);
+            break;
+        case 11:
+            Display(head);
+            printf("\nThe Linked List Is After Reverse->->->->\n");
+            ReverseDoubly(head);
+        default:
+            Display(head);
+        }
+        printf("Do You Want To Stop?: ");
+        scanf("%s", &ch);
+        if (ch == 'b' || ch == 'B')
+            break;
+    }
+    return 0;
 }
