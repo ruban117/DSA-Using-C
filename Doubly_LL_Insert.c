@@ -137,85 +137,81 @@ void DeleteAtLast(struct Node **head)
 void DeleteByNthNode(struct Node **head, int pos)
 {
     struct Node *p = *head;
-    struct Node *q ;
+    struct Node *q;
     if (*head == NULL)
     {
         printf("Invalid!!");
     }
     else if (pos == 1)
     {
-        if (p->next != NULL)
-            p->next->prev = NULL;
         *head = p->next;
         free(p);
-    }
-    else if ((*head)->next == NULL)
-    {
-        *head = NULL;
-        free(*head);
+        if (*head != NULL)
+        {
+            (*head)->prev = NULL;
+        }
     }
     else
     {
         for (int i = 1; i <= pos - 1; i++)
         {
             p = p->next;
-            //q = q->next;
+            // q = q->next;
         }
-        q=p->prev;
-        q->next=p->next;
-        p->next->prev=q;
+        p->prev->next = p->next;
+        if (p->next != NULL)
+            p->next->prev = p->prev;
         free(p);
-        p=NULL;
     }
 }
 
 void DeleteByValue(struct Node **head, int val)
 {
     struct Node *p = *head;
-    struct Node *q ;
+    struct Node *q;
     if (*head == NULL)
     {
         printf("Invalid!!");
     }
     else if (val == p->data)
     {
-        if (p->next != NULL)
-            p->next->prev = NULL;
         *head = p->next;
         free(p);
-    }
-    else if ((*head)->next == NULL)
-    {
-        *head = NULL;
-        free(*head);
+        if (*head != NULL)
+        {
+            (*head)->prev = NULL;
+        }
     }
     else
     {
-        while(p->data!=val && p->next!=NULL)
+        while (p->data != val && p->next != NULL)
         {
             p = p->next;
-            //q = q->next;
+            // q = q->next;
         }
-        q=p->prev;
-        q->next=p->next;
-        p->next->prev=q;
-        free(p);
-        p=NULL;
+        if (p->data == val)
+        {
+            p->prev->next = p->next;
+            if (p->next != NULL)
+                p->next->prev = p->prev;
+            free(p);
+        }
+        else
+        {
+            printf("Elemet Not Found");
+        }
     }
 }
 
-void ReverseDoubly(struct Node *head){
-    struct Node *p=head;
-    struct Node *q=head->next;
-    p->next=NULL;
-    p->prev=q;
-    while(q!=NULL){
-        q->prev=q->next;
-        q->next=p;
-        p=q;
-        q=q->prev;
+void ReverseDoubly(struct Node *head)
+{
+    while(head->next !=NULL){
+        head=head->next;
     }
-    p=head;
+    while(head !=NULL){
+        printf("%d ",head->data);
+        head=head->prev;
+    }
 }
 
 void Display(struct Node *head)
@@ -250,7 +246,7 @@ int main()
         printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
         printf("\t\t\t\t\t\t\t7->Delete At Begin In Doubly Linked List\n");
         printf("\t\t\t\t\t\t\t8->Delete By Nth Node In Doubly Linked List:\n");
-         printf("\t\t\t\t\t\t\t9->Delete The Node By Value In Doubly Linked List:\n");
+        printf("\t\t\t\t\t\t\t9->Delete The Node By Value In Doubly Linked List:\n");
         printf("\t\t\t\t\t\t\t10->Delete The Last Node In Doubly Linked List:\n");
         printf("\t\t\t\t\t\t\t->->->->->->->->->->->->->->->\n");
         printf("\t\t\t\t\t\t\t11->Reverse The Linked List In Doubly Linked List:\n");
@@ -331,10 +327,11 @@ int main()
             Display(head);
             printf("\nThe Linked List Is After Reverse->->->->\n");
             ReverseDoubly(head);
+            break;
         default:
             Display(head);
         }
-        printf("Do You Want To Stop?: ");
+        printf("\nDo You Want To Stop?: ");
         scanf("%s", &ch);
         if (ch == 'b' || ch == 'B')
             break;
