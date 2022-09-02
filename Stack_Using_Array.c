@@ -1,79 +1,86 @@
 #include<stdio.h>
-#include<stdlib.h>
-struct Stack{
+#define size 5
 
-    int capacity;
+struct Stack{
     int top;
-    int * arr;
+    int arr[size];
 };
 
-struct Stack* CreateStack(int capacity){
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
-    stack->capacity= capacity;
-    stack->top = -1;
-    stack->arr = (int*)malloc(stack->capacity * sizeof(int));
-    return stack;
-}
-
-int IsEmpty(struct Stack *ptr){
-    if(ptr->top==-1)
-    return 1;
-    return 0;
-}
-
-int IsFull(struct Stack *ptr){
-    if(ptr->top==ptr->capacity-1)
-    return 1;
-    return 0;
-}
-
-void Push(struct Stack *ptr,int val){
-    if(IsFull(ptr))
-    printf("Stack Overflow");
-    else{
-        ptr->top++;
-        ptr->arr[ptr->top]=val;
-    }
-}
-
-int Pop(struct Stack *ptr){
-    if(IsEmpty(ptr)){
-    printf("Stack Underflow!!!!");
-    return -1;
+int IsEmpty(struct Stack s){
+    if(s.top == -1){
+        return 1;
     }
     else{
-        int val=ptr->arr[ptr->top];
-        ptr->top--;
-        return val;
+        return 0;
     }
 }
 
-int Peek(struct Stack *ptr){
-    if(IsEmpty(ptr)){
-        printf("Stack Underflow!!!!");
-        return -1;
+int IsFull(struct Stack s){
+    if(s.top == size-1){
+        return 1;
     }
-        return (ptr->arr[ptr->top]);
+    else{
+        return 0;
+    }
+}
+
+void Push(struct Stack *s, int data){
+    s->top++;
+    s->arr[s->top]=data;
+    printf("Element Pushed!");
+}
+
+int PoP(struct Stack *s){
+    int val;
+    val=s->arr[s->top];
+    s->top--;
+    return val;
+}
+
+void Display(struct Stack *s){
+    for(int i=0;i<size;i++){
+        printf("%d ",PoP(s));
+    }
+}
+
+int Peek(struct Stack s){
+    return(s.arr[s.top]);
 }
 
 int main(){
-    struct Stack *sp=CreateStack(50);
-    int i,a;
-    printf("Enter The Size Of The Stack: ");
-    scanf("%d",&a);
-    printf("Creating Your Stack:::\n");
-    sp=CreateStack(a);
-    for(i=0;i<sp->capacity;i++){
-        printf("Enter Stack Value At Pos %d: ",i);
+    struct Stack s;
+    s.top=-1;
+    int n,a;
+    while(1){
+    printf("\t\t\t\t M E N U \t\t\t\t\n");
+    printf("\t\t\t\t<1> To push elements into stack \t\t\t\t\n");
+    printf("\t\t\t\t<2> To pop elements from the stack \t\t\t\t\n");
+    printf("\t\t\t\t<3> To peek the topest element in the stack \t\t\t\t\n");
+    printf("\t\t\t\t<4> To Display elements present in the stack \t\t\t\t\n");
+        printf("Enter The Case You Want To Do: ");
         scanf("%d",&a);
-        Push(sp,a);
+        switch(a){
+            case 1:
+            if(IsFull(s)){
+                printf("Stack Overflow");
+            }
+            else{
+                printf("Enter The Data To Push In Stack: ");
+                scanf("%d",n);
+                Push(&s,n);
+            }
+            break;
+            case 4:
+            if(IsEmpty(s)){
+                printf("Stack Underflow!!");
+            }
+            else{
+                printf("Poped Element is: %d",PoP(&s));
+            }
+            break;
+            case 2:
+            Display(&s);
+            break;
+        }
     }
-    printf("\nThe Topmost Element Is Into The Stack:");
-    printf("%d ",Peek(sp));
-
-    printf("\nThe Values Are Into The Stack:::\n");
-    for(i=0;i<sp->capacity;i++){
-        printf("%d ",Pop(sp));
-    }
-    return 0;
 }
