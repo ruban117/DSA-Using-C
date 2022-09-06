@@ -1,101 +1,116 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-struct Node{
+struct Node
+{
     int data;
     struct Node *next;
 };
 
-void CreateStack(struct Node **top){
-    *top=NULL;
-}
-
-int IsFull(struct Node *top){
-    struct Node *p=(struct Node*)malloc(sizeof(struct Node));
-    if(p==NULL)
-    return 1;
-    return 0;
-}
-
-int IsEmpty(struct Node *top){
-    if(top==NULL)
-    return 1;
-    return 0;
-}
-
-void Push(struct Node **top,int data){
-    struct Node *ptr=(struct Node*)malloc(sizeof(struct Node));
-    if(ptr==NULL){
-        printf("Unable To Insert Data Into Stack!!!!!");
-        return;
-    }
-    else{
-        ptr->data=data;
-        ptr->next=*top;
-        *top=ptr;
-    }
-}
-
-int PoP(struct Node **top){
-    int temp;
-        struct Node *ptr;
-        temp=(*top)->data;
-        ptr=*top;
-        *top=(*top)->next;
-        free(ptr);
-        return temp;
-}
-
-int Peek(struct Node **top){
-    if(IsEmpty(*top))
-    return 1;
-    return ((*top)->data);
-}
-
-void TraverseInLL(struct Node *top){
-    while(top!=NULL){
-        printf("%d ",top->data);
-        top=top->next;
-    }
-}
-
-int main(){
-        int a,val,ele;
-        struct Node *top;
-        CreateStack(&top);
-        while (1)
+int IsEmpty(struct Node *head)
+{
+    if (head == NULL)
     {
-        printf("\n");
-        printf("1->To Create A Stack Using LL Linked List\n");
-        printf("2->To See The Topest Element\n");
-        printf("3->To PoP Elements\n");
-        printf("4->Traverse\n");
-        printf("Enter Your Choice: ");
-        scanf("%d",&a);
-        switch(a){
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void Push(struct Node **head, int data)
+{
+    struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+    ptr->data = data;
+    ptr->next = *head;
+    *head = ptr;
+    printf("Element Pushed");
+}
+
+int PoP(struct Node **head)
+{
+    struct Node *p = *head;
+    int temp = (*head)->data;
+    *head = p->next;
+    free(p);
+    return temp;
+}
+
+int Peek(struct Node **head)
+{
+    return ((*head)->data);
+}
+
+/*void Display(struct Node **head)
+{
+    struct Node *cur=*head;
+    struct Node *prev=NULL;
+     while (cur != NULL)
+    {
+        struct Node *temp = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = temp;
+    }
+    *head = prev;
+}*/
+
+void Disp(struct Node *head){
+    struct Node *p=head;
+    while(p!=NULL){
+        printf("%d ",p->data);
+        p=p->next;
+    }
+}
+
+int main()
+{
+    struct Node *head = NULL;
+    while (1)
+    {
+        printf("\t\t\t\t M E N U \t\t\t\t\n");
+        printf("\t\t\t\t<1> To push elements into stack \t\t\t\t\n");
+        printf("\t\t\t\t<2> To pop elements from the stack \t\t\t\t\n");
+        printf("\t\t\t\t<3> To peek the topest element in the stack \t\t\t\t\n");
+        printf("\t\t\t\t<4> To Display elements present in the stack \t\t\t\t\n");
+        int a, n;
+        printf("Enter The Case You Want To Do: ");
+        scanf("%d", &a);
+        switch (a)
+        {
         case 1:
-            if(IsFull(top)){
-                printf("Stack Overflow");
-            }
-            
-                printf("Enter Value: ");
-                scanf("%d",&val);
-                Push(&top,val);
+            printf("Enter The Data To Push In Stack: ");
+            scanf("%d", &n);
+            Push(&head, n);
             break;
         case 2:
-            printf("The Toppest Element Is %d",Peek(&top));
+            if (IsEmpty(head))
+            {
+                printf("Stack Underflow!!");
+            }
+            else
+            {
+                printf("Poped Element is: %d", PoP(&head));
+            }
             break;
         case 3:
-            if(IsEmpty(top)){
-                printf("Stack Underflow");
-                exit(0);
+            if (IsEmpty(head))
+            {
+                printf("Stack Underflow!!");
             }
-            printf("Poped Element Is %d\n",PoP(&top));
+            else
+            {
+                printf("The Toppest Element Is %d", Peek(&head));
+            }
             break;
         case 4:
-            TraverseInLL(top);
+            //Display(&head);
+            Disp(head);
             break;
+        default:
+            printf("Wrong Input!!!");
         }
     }
-        return 0;
+    return 0;
 }
