@@ -65,8 +65,8 @@ int Dequeue(struct Queue *q)
     else
     {
         q->front++;
-        return temp;
     }
+    return temp;
 }
 
 int PeeK(struct Queue *q)
