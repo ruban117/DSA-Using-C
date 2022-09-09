@@ -57,6 +57,7 @@ void Enqueue(struct Queue *q, int data)
 int Dequeue(struct Queue *q)
 {
     int temp;
+    temp=q->arr[q->front];
     if (q->front == q->rear)
     {
         q->front = q->rear = -1;
